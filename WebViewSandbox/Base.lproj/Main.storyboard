@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mediaPlaybackRequiresUserAction = YES" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMQ-LR-zZ1">
+                                <rect key="frame" x="625" y="734" width="326" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="326" id="Zkm-9b-F8H"/>
+                                    <constraint firstAttribute="height" constant="21" id="hae-zX-YL4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hsI-AH-aG7">
+                                <rect key="frame" x="959" y="729" width="51" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="uyq-fx-qq2"/>
+                                    <constraint firstAttribute="width" constant="49" id="yNV-By-gD1"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="enableOption:" destination="BYZ-38-t0r" eventType="valueChanged" id="LdM-KZ-fy9"/>
+                                </connections>
+                            </switch>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R1r-Fb-sUL">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="44M-Zl-njo">
+                                <rect key="frame" x="502" y="374" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oHQ-bd-OPz">
+                                <rect key="frame" x="16" y="730" width="93" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="9sw-pT-Cmg"/>
+                                    <constraint firstAttribute="width" constant="93" id="kBn-mu-h7l"/>
+                                </constraints>
+                                <state key="normal" title="Reload">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="reloadContent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6RB-Wm-8i9"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oHQ-bd-OPz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="DWb-1p-wJa"/>
+                            <constraint firstItem="hsI-AH-aG7" firstAttribute="leading" secondItem="qMQ-LR-zZ1" secondAttribute="trailing" constant="8" id="HOh-UD-pTR"/>
+                            <constraint firstAttribute="centerY" secondItem="R1r-Fb-sUL" secondAttribute="centerY" id="NUl-t6-uNC"/>
+                            <constraint firstAttribute="centerY" secondItem="44M-Zl-njo" secondAttribute="centerY" id="PJH-CL-au5"/>
+                            <constraint firstAttribute="height" secondItem="R1r-Fb-sUL" secondAttribute="height" id="RYr-PX-LrP"/>
+                            <constraint firstItem="hsI-AH-aG7" firstAttribute="centerY" secondItem="qMQ-LR-zZ1" secondAttribute="centerY" id="Ujs-ap-oah"/>
+                            <constraint firstItem="hsI-AH-aG7" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="VNk-j2-3D5"/>
+                            <constraint firstAttribute="centerX" secondItem="R1r-Fb-sUL" secondAttribute="centerX" id="YY3-Ld-QqF"/>
+                            <constraint firstAttribute="width" secondItem="R1r-Fb-sUL" secondAttribute="width" id="Z28-qm-FNq"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hsI-AH-aG7" secondAttribute="bottom" constant="8" id="rxk-1E-X4S"/>
+                            <constraint firstAttribute="centerX" secondItem="44M-Zl-njo" secondAttribute="centerX" id="ttS-Ao-9Yr"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oHQ-bd-OPz" secondAttribute="bottom" constant="8" id="wPR-6A-O5E"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Fb-sUL" secondAttribute="bottom" id="xye-wm-2sG"/>
+                        </constraints>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="44M-Zl-njo" id="FSH-NF-FcH"/>
+                        <outlet property="hostView" destination="R1r-Fb-sUL" id="osM-tl-Yrz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="398" y="380"/>
+        </scene>
+    </scenes>
+</document>
