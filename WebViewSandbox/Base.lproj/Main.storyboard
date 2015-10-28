@@ -45,8 +45,11 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="44M-Zl-njo">
                                 <rect key="frame" x="502" y="374" width="20" height="20"/>
                             </activityIndicatorView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XPh-P1-S0B">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPh-P1-S0B">
                                 <rect key="frame" x="0.0" y="724" width="1024" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="dHU-Jx-0fw"/>
+                                </constraints>
                                 <items>
                                     <barButtonItem systemItem="refresh" id="CU9-Zz-GM7">
                                         <connections>
@@ -69,8 +72,11 @@
                             <constraint firstAttribute="height" secondItem="R1r-Fb-sUL" secondAttribute="height" id="RYr-PX-LrP"/>
                             <constraint firstItem="hsI-AH-aG7" firstAttribute="centerY" secondItem="qMQ-LR-zZ1" secondAttribute="centerY" id="Ujs-ap-oah"/>
                             <constraint firstItem="hsI-AH-aG7" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="VNk-j2-3D5"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="XPh-P1-S0B" secondAttribute="bottom" id="YXl-qn-Md2"/>
                             <constraint firstAttribute="centerX" secondItem="R1r-Fb-sUL" secondAttribute="centerX" id="YY3-Ld-QqF"/>
                             <constraint firstAttribute="width" secondItem="R1r-Fb-sUL" secondAttribute="width" id="Z28-qm-FNq"/>
+                            <constraint firstItem="XPh-P1-S0B" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="dCh-wO-sZh"/>
+                            <constraint firstAttribute="centerX" secondItem="XPh-P1-S0B" secondAttribute="centerX" id="oxE-4E-jjC"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hsI-AH-aG7" secondAttribute="bottom" constant="8" id="rxk-1E-X4S"/>
                             <constraint firstAttribute="centerX" secondItem="44M-Zl-njo" secondAttribute="centerX" id="ttS-Ao-9Yr"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Fb-sUL" secondAttribute="bottom" id="xye-wm-2sG"/>
