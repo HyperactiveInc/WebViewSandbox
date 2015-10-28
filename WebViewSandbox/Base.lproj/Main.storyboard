@@ -45,23 +45,24 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="44M-Zl-njo">
                                 <rect key="frame" x="502" y="374" width="20" height="20"/>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oHQ-bd-OPz">
-                                <rect key="frame" x="16" y="730" width="93" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="9sw-pT-Cmg"/>
-                                    <constraint firstAttribute="width" constant="93" id="kBn-mu-h7l"/>
-                                </constraints>
-                                <state key="normal" title="Reload">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="reloadContent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6RB-Wm-8i9"/>
-                                </connections>
-                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XPh-P1-S0B">
+                                <rect key="frame" x="0.0" y="724" width="1024" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="refresh" id="CU9-Zz-GM7">
+                                        <connections>
+                                            <action selector="reloadContent:" destination="BYZ-38-t0r" id="d3a-rJ-lur"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Unzip archive" id="eYu-57-4IK">
+                                        <connections>
+                                            <action selector="unzipArchive:" destination="BYZ-38-t0r" id="f67-lh-5XI"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="oHQ-bd-OPz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="DWb-1p-wJa"/>
                             <constraint firstItem="hsI-AH-aG7" firstAttribute="leading" secondItem="qMQ-LR-zZ1" secondAttribute="trailing" constant="8" id="HOh-UD-pTR"/>
                             <constraint firstAttribute="centerY" secondItem="R1r-Fb-sUL" secondAttribute="centerY" id="NUl-t6-uNC"/>
                             <constraint firstAttribute="centerY" secondItem="44M-Zl-njo" secondAttribute="centerY" id="PJH-CL-au5"/>
@@ -72,7 +73,6 @@
                             <constraint firstAttribute="width" secondItem="R1r-Fb-sUL" secondAttribute="width" id="Z28-qm-FNq"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hsI-AH-aG7" secondAttribute="bottom" constant="8" id="rxk-1E-X4S"/>
                             <constraint firstAttribute="centerX" secondItem="44M-Zl-njo" secondAttribute="centerX" id="ttS-Ao-9Yr"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oHQ-bd-OPz" secondAttribute="bottom" constant="8" id="wPR-6A-O5E"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Fb-sUL" secondAttribute="bottom" id="xye-wm-2sG"/>
                         </constraints>
                     </view>
@@ -85,7 +85,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="398" y="380"/>
+            <point key="canvasLocation" x="428" y="144"/>
         </scene>
     </scenes>
 </document>

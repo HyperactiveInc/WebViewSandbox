@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "ZipArchive.h"
 
+static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
+
 @interface ViewController () {
   
   NSURL *_contentURL;
@@ -26,7 +28,6 @@
 
 - (UIWebView *)presentWebView;
 {
-  
   if ( !_presentWebView ) {
 	UIWebView *webView = [[UIWebView alloc] init];
 	webView.opaque = NO;
@@ -48,21 +49,67 @@
   return _presentWebView;
 }
 
+- (NSURL *)applicationSupportDirectory;
+{
+  NSURL *URL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+  
+  if ( ![[NSFileManager defaultManager] fileExistsAtPath:URL.path] ) {
+	[[NSFileManager defaultManager] createDirectoryAtURL:URL withIntermediateDirectories:YES attributes:nil error:nil];
+  }
+  return URL;
+}
+
+- (NSURL *)contentURL;
+{
+  if ( !_contentURL ) {
+	// Directory in archive should match archive filename
+	NSString *unzipPath  = self.applicationSupportDirectory.path;
+	unzipPath = [unzipPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/index.html", ARCHIEVE_NAME]];
+	_contentURL = [NSURL fileURLWithPath:unzipPath];
+  }
+  return _contentURL;
+}
+
 - (void)viewDidLoad;
 {
   [super viewDidLoad];
+  
+  if ( [[NSFileManager defaultManager] fileExistsAtPath:self.contentURL.path] ) {
+	[self loadContent];
+	[self.activityIndicator stopAnimating];
+  }
+}
+
+- (void)viewDidAppear:(BOOL)animated;
+{
+  [super viewDidAppear:animated];
+  
+  self.presentWebView.frame = self.hostView.bounds;
+  [self.hostView addSubview:self.presentWebView];
+}
+
+- (void)loadContent;
+{
+  NSURLRequest *request = [NSURLRequest requestWithURL:self.contentURL];
+  [self.presentWebView loadRequest:request];
+}
+
+- (IBAction)reloadContent:(id)sender;
+{
+  [self loadContent];
+}
+
+- (IBAction)unzipArchive:(id)sender;
+{
+  [self.activityIndicator startAnimating];
 
   dispatch_queue_t queue = dispatch_queue_create("unzip", 0);
   
   dispatch_async(queue, ^{
 	
-	NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+	NSURL *url = self.applicationSupportDirectory;
 	
-	if ( ![[NSFileManager defaultManager] fileExistsAtPath:url.path] ) {
-	  [[NSFileManager defaultManager] createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:nil];
-	}
-	
-	NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"sample-contentitem" ofType:@"zip"];
+	NSString *originalPath = [[NSBundle mainBundle] pathForResource:ARCHIEVE_NAME ofType:@"zip"];
 	NSString *unzipPath  = url.path;
 	
 	ZipArchive *zip = [[ZipArchive alloc] init];
@@ -82,35 +129,14 @@
 	  [zip UnzipCloseFile];
 	}
 	
-	// Directory in archive should match archive filename
-	unzipPath = [unzipPath stringByAppendingPathComponent:@"sample-contentitem/index.html"];
-	_contentURL = [NSURL fileURLWithPath:unzipPath];
-	
 	dispatch_async(dispatch_get_main_queue(), ^{
+	  UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"Archive" message:@"Archive unzupped" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	  [alerView show];
 	  [self loadContent];
 	  [self.activityIndicator stopAnimating];
 	});
 	
   });
-}
-
-- (void)viewDidAppear:(BOOL)animated;
-{
-  [super viewDidAppear:animated];
-  
-  self.presentWebView.frame = self.hostView.bounds;
-  [self.hostView addSubview:self.presentWebView];
-}
-
-- (void)loadContent;
-{
-  NSURLRequest *request = [NSURLRequest requestWithURL:_contentURL];
-  [self.presentWebView loadRequest:request];
-}
-
-- (IBAction)reloadContent:(id)sender;
-{
-  [self loadContent];
 }
 
 - (IBAction)enableOption:(id)sender;
