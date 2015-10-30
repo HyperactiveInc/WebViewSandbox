@@ -15,6 +15,8 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
   
   NSURL *_contentURL;
   
+  BOOL _unzipping;
+  
 }
 
 @property (nonatomic, weak) IBOutlet UIView *hostView;
@@ -101,8 +103,15 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 
 - (IBAction)unzipArchive:(id)sender;
 {
+  if ( _unzipping ) {
+	return;
+  }
+  
+  _unzipping = YES;
+  
   [self.activityIndicator startAnimating];
 
+  
   dispatch_queue_t queue = dispatch_queue_create("unzip", 0);
   
   dispatch_async(queue, ^{
@@ -132,6 +141,8 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 	dispatch_async(dispatch_get_main_queue(), ^{
 	  UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"Archive" message:@"Archive unzupped" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	  [alerView show];
+	  
+	  _unzipping = NO;
 	  [self loadContent];
 	  [self.activityIndicator stopAnimating];
 	});
