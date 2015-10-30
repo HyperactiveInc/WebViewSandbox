@@ -21,6 +21,7 @@
 		4A12A8CC1A977F640078D64E /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A12A8C51A977F640078D64E /* zip.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4A12A8CD1A977F640078D64E /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4A12A8C81A977F640078D64E /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4A12A8CF1A977F710078D64E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A12A8CE1A977F710078D64E /* libz.dylib */; };
+		4A724BBD1BE3C7AC00B3BEFB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A724BBC1BE3C7AC00B3BEFB /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		4A12A8C71A977F640078D64E /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		4A12A8C81A977F640078D64E /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 		4A12A8CE1A977F710078D64E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		4A724BBC1BE3C7AC00B3BEFB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A724BBD1BE3C7AC00B3BEFB /* WebKit.framework in Frameworks */,
 				4A12A8CF1A977F710078D64E /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				4A12A8CE1A977F710078D64E /* libz.dylib */,
+				4A724BBC1BE3C7AC00B3BEFB /* WebKit.framework */,
 				4A12A8921A977EBC0078D64E /* WebViewSandbox */,
 				4A12A8AC1A977EBD0078D64E /* WebViewSandboxTests */,
 				4A12A8911A977EBC0078D64E /* Products */,

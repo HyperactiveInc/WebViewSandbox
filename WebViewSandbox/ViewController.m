@@ -8,29 +8,33 @@
 
 #import "ViewController.h"
 #import "ZipArchive.h"
+#import <WebKit/WebKit.h>
 
 static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 
-@interface ViewController () {
+@interface ViewController () <WKNavigationDelegate> {
   
   NSURL *_contentURL;
   
   BOOL _unzipping;
-  
+
 }
+
+@property (nonatomic, assign, getter=isUsingWebKit) BOOL usingWebKit;
 
 @property (nonatomic, weak) IBOutlet UIView *hostView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic, strong) UIWebView *presentWebView;
+@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) WKWebView *webKitWebView;
 
 @end
 
 @implementation ViewController
 
-- (UIWebView *)presentWebView;
+- (UIWebView *)webView;
 {
-  if ( !_presentWebView ) {
+  if ( !_webView ) {
 	UIWebView *webView = [[UIWebView alloc] init];
 	webView.opaque = NO;
 	webView.scalesPageToFit = YES;
@@ -45,11 +49,28 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 	webView.scrollView.maximumZoomScale = 1.0;
 	webView.scrollView.scrollEnabled = NO;
 	webView.scrollView.bounces = NO;
-	_presentWebView = webView;
+	_webView = webView;
   }
   
-  return _presentWebView;
+  return _webView;
 }
+
+- (WKWebView *)webKitWebView;
+{
+  if ( !_webKitWebView ) {
+	WKUserContentController* userContentController = [[WKUserContentController alloc] init];
+	
+	WKWebViewConfiguration* configuration = [[WKWebViewConfiguration alloc] init];
+	configuration.userContentController = userContentController;
+	
+	WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+	webView.navigationDelegate = self;
+	_webKitWebView = webView;
+  }
+  return _webKitWebView;
+}
+
+
 
 - (NSURL *)applicationSupportDirectory;
 {
@@ -61,15 +82,22 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
   return URL;
 }
 
+- (NSURL *)applicationTmpDirectory;
+{
+  NSString *filePath = NSTemporaryDirectory();
+  if ( ![[NSFileManager defaultManager] fileExistsAtPath:filePath] ) {
+	[[NSFileManager defaultManager] createDirectoryAtPath:filePath withIntermediateDirectories:YES attributes:nil error:nil];
+  }
+  return [NSURL fileURLWithPath:filePath];
+}
+
 - (NSURL *)contentURL;
 {
-  if ( !_contentURL ) {
-	// Directory in archive should match archive filename
-	NSString *unzipPath  = self.applicationSupportDirectory.path;
-	unzipPath = [unzipPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/index.html", ARCHIEVE_NAME]];
-	_contentURL = [NSURL fileURLWithPath:unzipPath];
-  }
-  return _contentURL;
+  // Directory in archive should match archive filename
+  NSString *unzipPath  = ( self.isUsingWebKit ) ? self.applicationTmpDirectory.path : self.applicationSupportDirectory.path;
+  unzipPath = [unzipPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/index.html", ARCHIEVE_NAME]];
+  NSURL *contentURL = [NSURL fileURLWithPath:unzipPath];
+  return contentURL;
 }
 
 - (void)viewDidLoad;
@@ -86,14 +114,32 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 {
   [super viewDidAppear:animated];
   
-  self.presentWebView.frame = self.hostView.bounds;
-  [self.hostView addSubview:self.presentWebView];
+  self.webView.frame = self.hostView.bounds;
+  self.webKitWebView.frame = self.hostView.bounds;
+  self.webKitWebView.hidden = YES;
+  [self.hostView addSubview:self.webKitWebView];
+  [self.hostView addSubview:self.webView];
 }
 
 - (void)loadContent;
 {
   NSURLRequest *request = [NSURLRequest requestWithURL:self.contentURL];
-  [self.presentWebView loadRequest:request];
+  UIView *nextWebView = (self.isUsingWebKit ) ? self.webKitWebView : self.webView;
+  UIView *currentWebView = (self.isUsingWebKit ) ? self.webView : self.webKitWebView;
+  
+  nextWebView.alpha = 0.f;
+  nextWebView.hidden = NO;
+  
+  self.isUsingWebKit ? [self.webKitWebView loadRequest:request] : [self.webView loadRequest:request];
+
+  [self.view bringSubviewToFront:nextWebView];
+
+  [UIView animateWithDuration:0.5f animations:^{
+	nextWebView.alpha = 1.f;
+	currentWebView.alpha = 0.f;
+  } completion:^(BOOL finished) {
+	currentWebView.hidden = YES;
+  }];
 }
 
 - (IBAction)reloadContent:(id)sender;
@@ -120,7 +166,7 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 	
 	NSString *originalPath = [[NSBundle mainBundle] pathForResource:ARCHIEVE_NAME ofType:@"zip"];
 	NSString *unzipPath  = url.path;
-	
+	NSString *tempPath = [self.applicationTmpDirectory.path stringByAppendingPathComponent:ARCHIEVE_NAME];
 	ZipArchive *zip = [[ZipArchive alloc] init];
 	
 	// Open archive
@@ -138,6 +184,16 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 	  [zip UnzipCloseFile];
 	}
 	
+	if ( [[NSFileManager defaultManager] fileExistsAtPath:tempPath] ) {
+	  [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
+	}
+	
+	NSError *error = nil;
+	[[NSFileManager defaultManager] copyItemAtPath:[unzipPath stringByAppendingPathComponent:ARCHIEVE_NAME] toPath:tempPath error:&error];
+	if ( error ) {
+	  NSLog(@"Directory copy error: %@", error.localizedDescription);
+	}
+	
 	dispatch_async(dispatch_get_main_queue(), ^{
 	  UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"Archive" message:@"Archive unzupped" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	  [alerView show];
@@ -153,9 +209,51 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 - (IBAction)enableOption:(id)sender;
 {
   UISwitch *sw = (UISwitch *)sender;
-  self.presentWebView.mediaPlaybackRequiresUserAction = sw.isOn;
+  self.webView.mediaPlaybackRequiresUserAction = sw.isOn;
 
-//  [self loadContent];
+//  [self loadUIWebViewContent];
+}
+
+- (IBAction)useWebKitToggle:(id)sender;
+{
+  UISwitch *sw = (UISwitch *)sender;
+  
+  self.usingWebKit = sw.isOn;
+
+  [self loadContent];
+}
+
+
+#pragma mark - WKNavigationDelegate's methods
+
+- (void)webView:(WKWebView *)webView
+didFailNavigation:(WKNavigation *)navigation
+	  withError:(NSError *)error
+{
+  NSLog(@"%@", [error localizedDescription]);
+//  [self alert:[error localizedDescription]];
+}
+
+- (void)webView:(WKWebView *)webView
+didFailProvisionalNavigation:(WKNavigation *)navigation
+	  withError:(NSError *)error
+{
+  NSLog(@"%@", [error localizedDescription]);
+//  [self alert:[error localizedDescription]];
+}
+
+- (void)webView:(WKWebView *)webView
+didFinishNavigation:(WKNavigation *)navigation
+{
+}
+
+
+- (void)webView:(WKWebView *)webView
+decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+  NSLog(@"URL: %@", [navigationAction.request.URL description]);
+  decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 @end
