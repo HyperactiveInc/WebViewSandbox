@@ -62,6 +62,9 @@ static NSString * const ARCHIEVE_NAME = @"sample-contentitem";
 	
 	WKWebViewConfiguration* configuration = [[WKWebViewConfiguration alloc] init];
 	configuration.userContentController = userContentController;
+	configuration.allowsInlineMediaPlayback = YES;
+	configuration.mediaPlaybackAllowsAirPlay = NO;
+	configuration.mediaPlaybackRequiresUserAction = NO;
 	
 	WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
 	webView.navigationDelegate = self;
